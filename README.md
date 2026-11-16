@@ -2,7 +2,7 @@
 
 # nvim-config · Molli Neon
 
-**Configuración de Neovim modular, multiplataforma (Fedora / macOS) y con identidad visual propia.**
+**Configuración de Neovim modular, multiplataforma (Fedora / macOS) .**
 
 Lua · lazy.nvim · LSP nativo de Neovim 0.12 · Mason · blink.cmp · Treesitter
 

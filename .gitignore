@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editores / temporales
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+*.log
+.netrwhist
+Session.vim
+sessions/
+undo/
+backup/
+swap/
+view/
+
+# Datos locales que Neovim/plugins podrían crear dentro de la config
+# (normalmente viven en stdpath("data") / stdpath("state"), fuera del repo)
+mason/
+lazy/
+site/
+spell/*.spl
+plugin/packer_compiled.lua
+.luarc.json
+.neoconf.json
+
+# Configuración personal no versionada (crea este archivo para overrides locales)
+lua/config/local.lua
+
+# Secretos
+.env
+.env.*
+*.pem
+*.key

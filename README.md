@@ -141,7 +141,7 @@ Descarga *JetBrainsMono Nerd Font* de <https://www.nerdfonts.com/font-downloads>
 ### 5. Clonar e iniciar
 
 ```bash
-git clone https://github.com/molli/nvim-config.git ~/.config/nvim
+git clone https://github.com/th3progr4mmer14/nvim-config.git ~/.config/nvim
 nvim
 ```
 
@@ -205,7 +205,7 @@ flutter doctor
 ### 5. Clonar e iniciar
 
 ```bash
-git clone https://github.com/molli/nvim-config.git ~/.config/nvim
+git clone https://github.com/th3progr4mmer14/nvim-config.git ~/.config/nvim
 nvim
 ```
 
@@ -669,10 +669,10 @@ git add .
 git commit -m "feat: configuración inicial de Neovim con tema Molli Neon"
 
 # Con GitHub CLI:
-gh repo create molli/nvim-config --public --source . --push --description "Neovim 0.12 · Lua · tema Molli Neon"
+gh repo create th3progr4mmer14/nvim-config --public --source . --push --description "Neovim 0.12 · Lua · tema Molli Neon"
 
 # O manualmente (crea el repo vacío en github.com primero):
-git remote add origin git@github.com:molli/nvim-config.git
+git remote add origin git@github.com:th3progr4mmer14/nvim-config.git
 git push -u origin main
 ```
 

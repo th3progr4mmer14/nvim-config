@@ -1,0 +1,315 @@
+{
+  "Spring Boot: clase principal": {
+    "prefix": "sbapp",
+    "description": "Clase principal @SpringBootApplication",
+    "body": [
+      "import org.springframework.boot.SpringApplication;",
+      "import org.springframework.boot.autoconfigure.SpringBootApplication;",
+      "",
+      "@SpringBootApplication",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\tpublic static void main(String[] args) {",
+      "\t\tSpringApplication.run(${1:${TM_FILENAME_BASE}}.class, args);",
+      "\t}",
+      "}"
+    ]
+  },
+  "Spring Boot: REST controller CRUD": {
+    "prefix": "sbcontroller",
+    "description": "@RestController con GET, POST, PUT y DELETE",
+    "body": [
+      "import jakarta.validation.Valid;",
+      "import lombok.RequiredArgsConstructor;",
+      "import org.springframework.http.HttpStatus;",
+      "import org.springframework.http.ResponseEntity;",
+      "import org.springframework.web.bind.annotation.*;",
+      "",
+      "import java.util.List;",
+      "",
+      "@RestController",
+      "@RequestMapping(\"/api/${2:recursos}\")",
+      "@RequiredArgsConstructor",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\tprivate final ${3:Recurso}Service service;",
+      "",
+      "\t@GetMapping",
+      "\tpublic List<${3:Recurso}Response> listar() {",
+      "\t\treturn service.listar();",
+      "\t}",
+      "",
+      "\t@GetMapping(\"/{id}\")",
+      "\tpublic ${3:Recurso}Response obtener(@PathVariable ${4:Long} id) {",
+      "\t\treturn service.obtener(id);",
+      "\t}",
+      "",
+      "\t@PostMapping",
+      "\t@ResponseStatus(HttpStatus.CREATED)",
+      "\tpublic ${3:Recurso}Response crear(@Valid @RequestBody ${3:Recurso}Request request) {",
+      "\t\treturn service.crear(request);",
+      "\t}",
+      "",
+      "\t@PutMapping(\"/{id}\")",
+      "\tpublic ${3:Recurso}Response actualizar(@PathVariable ${4:Long} id, @Valid @RequestBody ${3:Recurso}Request request) {",
+      "\t\treturn service.actualizar(id, request);",
+      "\t}",
+      "",
+      "\t@DeleteMapping(\"/{id}\")",
+      "\tpublic ResponseEntity<Void> eliminar(@PathVariable ${4:Long} id) {",
+      "\t\tservice.eliminar(id);",
+      "\t\treturn ResponseEntity.noContent().build();",
+      "\t}",
+      "}"
+    ]
+  },
+  "Spring Boot: controller vacío": {
+    "prefix": "sbrest",
+    "description": "@RestController sin métodos",
+    "body": [
+      "import lombok.RequiredArgsConstructor;",
+      "import org.springframework.web.bind.annotation.RequestMapping;",
+      "import org.springframework.web.bind.annotation.RestController;",
+      "",
+      "@RestController",
+      "@RequestMapping(\"/api/${2:ruta}\")",
+      "@RequiredArgsConstructor",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: service": {
+    "prefix": "sbservice",
+    "description": "@Service con inyección por constructor",
+    "body": [
+      "import lombok.RequiredArgsConstructor;",
+      "import org.springframework.stereotype.Service;",
+      "import org.springframework.transaction.annotation.Transactional;",
+      "",
+      "@Service",
+      "@RequiredArgsConstructor",
+      "@Transactional(readOnly = true)",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\tprivate final ${2:Recurso}Repository repository;",
+      "",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: repository JPA": {
+    "prefix": "sbrepo",
+    "description": "Interfaz JpaRepository",
+    "body": [
+      "import org.springframework.data.jpa.repository.JpaRepository;",
+      "import org.springframework.stereotype.Repository;",
+      "",
+      "@Repository",
+      "public interface ${1:${TM_FILENAME_BASE}} extends JpaRepository<${2:Entidad}, ${3:Long}> {",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: entidad JPA": {
+    "prefix": "sbentity",
+    "description": "@Entity con Lombok, id autoincremental y auditoría básica",
+    "body": [
+      "import jakarta.persistence.*;",
+      "import lombok.AccessLevel;",
+      "import lombok.Getter;",
+      "import lombok.NoArgsConstructor;",
+      "import lombok.Setter;",
+      "",
+      "import java.time.Instant;",
+      "",
+      "@Entity",
+      "@Table(name = \"${2:tabla}\")",
+      "@Getter",
+      "@Setter",
+      "@NoArgsConstructor(access = AccessLevel.PROTECTED)",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\t@Id",
+      "\t@GeneratedValue(strategy = GenerationType.IDENTITY)",
+      "\tprivate Long id;",
+      "",
+      "\t@Column(nullable = false)",
+      "\tprivate String ${3:nombre};",
+      "",
+      "\t@Column(name = \"created_at\", nullable = false, updatable = false)",
+      "\tprivate Instant createdAt;",
+      "",
+      "\t@PrePersist",
+      "\tvoid prePersist() {",
+      "\t\tthis.createdAt = Instant.now();",
+      "\t}",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: DTO record": {
+    "prefix": "sbrecord",
+    "description": "record con validaciones de Jakarta",
+    "body": [
+      "import jakarta.validation.constraints.NotBlank;",
+      "",
+      "public record ${1:${TM_FILENAME_BASE}}(",
+      "\t@NotBlank String ${2:nombre}$0",
+      ") {}"
+    ]
+  },
+  "Spring Boot: manejador global de errores": {
+    "prefix": "sbadvice",
+    "description": "@RestControllerAdvice con ProblemDetail",
+    "body": [
+      "import org.springframework.http.HttpStatus;",
+      "import org.springframework.http.ProblemDetail;",
+      "import org.springframework.web.bind.MethodArgumentNotValidException;",
+      "import org.springframework.web.bind.annotation.ExceptionHandler;",
+      "import org.springframework.web.bind.annotation.RestControllerAdvice;",
+      "",
+      "@RestControllerAdvice",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\t@ExceptionHandler(MethodArgumentNotValidException.class)",
+      "\tpublic ProblemDetail validacion(MethodArgumentNotValidException ex) {",
+      "\t\tProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);",
+      "\t\tproblem.setTitle(\"Datos inválidos\");",
+      "\t\tex.getBindingResult().getFieldErrors()",
+      "\t\t\t.forEach(e -> problem.setProperty(e.getField(), e.getDefaultMessage()));",
+      "\t\treturn problem;",
+      "\t}",
+      "",
+      "\t@ExceptionHandler(${2:IllegalArgumentException}.class)",
+      "\tpublic ProblemDetail ${3:argumentoInvalido}(${2:IllegalArgumentException} ex) {",
+      "\t\treturn ProblemDetail.forStatusAndDetail(HttpStatus.${4:BAD_REQUEST}, ex.getMessage());",
+      "\t}",
+      "}"
+    ]
+  },
+  "Spring Boot: @Configuration": {
+    "prefix": "sbconfig",
+    "description": "Clase @Configuration con un @Bean",
+    "body": [
+      "import org.springframework.context.annotation.Bean;",
+      "import org.springframework.context.annotation.Configuration;",
+      "",
+      "@Configuration",
+      "public class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\t@Bean",
+      "\tpublic ${2:Tipo} ${3:nombre}() {",
+      "\t\treturn $0;",
+      "\t}",
+      "}"
+    ]
+  },
+  "Spring Boot: @GetMapping": {
+    "prefix": "sbget",
+    "description": "Método GET",
+    "body": [
+      "@GetMapping(\"${1:/ruta}\")",
+      "public ${2:ResponseEntity<?>} ${3:obtener}(${4}) {",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: @PostMapping": {
+    "prefix": "sbpost",
+    "description": "Método POST con @Valid @RequestBody",
+    "body": [
+      "@PostMapping(\"${1}\")",
+      "@ResponseStatus(HttpStatus.CREATED)",
+      "public ${2:Respuesta} ${3:crear}(@Valid @RequestBody ${4:Solicitud} request) {",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: @PutMapping": {
+    "prefix": "sbput",
+    "description": "Método PUT",
+    "body": [
+      "@PutMapping(\"/{id}\")",
+      "public ${1:Respuesta} ${2:actualizar}(@PathVariable ${3:Long} id, @Valid @RequestBody ${4:Solicitud} request) {",
+      "\t$0",
+      "}"
+    ]
+  },
+  "Spring Boot: @DeleteMapping": {
+    "prefix": "sbdelete",
+    "description": "Método DELETE que responde 204",
+    "body": [
+      "@DeleteMapping(\"/{id}\")",
+      "public ResponseEntity<Void> ${1:eliminar}(@PathVariable ${2:Long} id) {",
+      "\t$0",
+      "\treturn ResponseEntity.noContent().build();",
+      "}"
+    ]
+  },
+  "Spring Boot: test de integración": {
+    "prefix": "sbtest",
+    "description": "@SpringBootTest con MockMvc",
+    "body": [
+      "import org.junit.jupiter.api.Test;",
+      "import org.springframework.beans.factory.annotation.Autowired;",
+      "import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;",
+      "import org.springframework.boot.test.context.SpringBootTest;",
+      "import org.springframework.test.web.servlet.MockMvc;",
+      "",
+      "import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;",
+      "import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;",
+      "",
+      "@SpringBootTest",
+      "@AutoConfigureMockMvc",
+      "class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\t@Autowired",
+      "\tprivate MockMvc mockMvc;",
+      "",
+      "\t@Test",
+      "\tvoid ${2:respondeOk}() throws Exception {",
+      "\t\tmockMvc.perform(get(\"${3:/api/recursos}\"))",
+      "\t\t\t.andExpect(status().isOk());$0",
+      "\t}",
+      "}"
+    ]
+  },
+  "Spring Boot: test unitario con Mockito": {
+    "prefix": "sbunit",
+    "description": "Test JUnit 5 + Mockito para un service",
+    "body": [
+      "import org.junit.jupiter.api.Test;",
+      "import org.junit.jupiter.api.extension.ExtendWith;",
+      "import org.mockito.InjectMocks;",
+      "import org.mockito.Mock;",
+      "import org.mockito.junit.jupiter.MockitoExtension;",
+      "",
+      "import static org.assertj.core.api.Assertions.assertThat;",
+      "import static org.mockito.Mockito.when;",
+      "",
+      "@ExtendWith(MockitoExtension.class)",
+      "class ${1:${TM_FILENAME_BASE}} {",
+      "",
+      "\t@Mock",
+      "\tprivate ${2:Recurso}Repository repository;",
+      "",
+      "\t@InjectMocks",
+      "\tprivate ${2:Recurso}Service service;",
+      "",
+      "\t@Test",
+      "\tvoid ${3:deberia_hacer_algo}() {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ]
+  },
+  "Spring Boot: logger Slf4j": {
+    "prefix": "sblog",
+    "description": "Logger estático de SLF4J",
+    "body": [
+      "private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(${1:${TM_FILENAME_BASE}}.class);"
+    ]
+  }
+}

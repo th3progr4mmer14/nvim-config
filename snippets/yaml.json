@@ -1,0 +1,35 @@
+{
+  "Spring Boot: datasource PostgreSQL": {
+    "prefix": "sbdatasource",
+    "description": "application.yml: PostgreSQL + JPA, credenciales por variables de entorno",
+    "body": [
+      "spring:",
+      "  datasource:",
+      "    url: \\${DB_URL:jdbc:postgresql://localhost:${1:5433}/${2:mi_base}}",
+      "    username: \\${DB_USER:${3:postgres}}",
+      "    password: \\${DB_PASSWORD:${4:postgres}}",
+      "  jpa:",
+      "    hibernate:",
+      "      ddl-auto: ${5:validate}",
+      "    open-in-view: false",
+      "    properties:",
+      "      hibernate:",
+      "        format_sql: true",
+      "$0"
+    ]
+  },
+  "Spring Boot: servidor y actuator": {
+    "prefix": "sbserver",
+    "description": "application.yml: puerto y health de actuator",
+    "body": [
+      "server:",
+      "  port: \\${PORT:${1:8080}}",
+      "management:",
+      "  endpoints:",
+      "    web:",
+      "      exposure:",
+      "        include: health,info",
+      "$0"
+    ]
+  }
+}

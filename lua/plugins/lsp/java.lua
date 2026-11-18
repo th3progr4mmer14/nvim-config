@@ -4,6 +4,13 @@
 --   · refactors propios de jdtls (extraer variable/constante/método, organizar imports)
 --   · registro automático del adaptador de depuración `java` en nvim-dap
 --     cuando están instalados java-debug-adapter y java-test (ver README → Depuración)
+--
+-- spring-boot.nvim conecta el servidor oficial de Spring (vscode-spring-boot-tools,
+-- instalado por Mason) para:
+--   · autocompletado y validación de application.yml / application.properties
+--   · beans, endpoints y anotaciones de Spring (:SpringBoot)
+--   · extensiones de jdtls para Spring (se añaden en lua/config/lsp/servers.lua)
+-- Sólo arranca en proyectos que dependen de Spring Boot.
 return {
   {
     "mfussenegger/nvim-jdtls",
@@ -58,6 +65,24 @@ return {
         ft = "java",
         desc = "Java: depurar clase de test",
       },
+    },
+  },
+  {
+    "JavaHello/spring-boot.nvim",
+    ft = { "java", "yaml", "jproperties" },
+    dependencies = { "mfussenegger/nvim-jdtls" },
+    cond = function()
+      return vim.fn.executable("java") == 1
+    end,
+    keys = {
+      { "<leader>jb", "<cmd>SpringBoot Beans<CR>", ft = "java", desc = "Spring: buscar beans" },
+      { "<leader>je", "<cmd>SpringBoot RequestMappings<CR>", ft = "java", desc = "Spring: buscar endpoints" },
+      { "<leader>ja", "<cmd>SpringBoot Annotations<CR>", ft = "java", desc = "Spring: buscar anotaciones" },
+    },
+    opts = {
+      project_filter = function(root_dir)
+        return require("spring_boot.util").has_spring_boot_dependency(root_dir)
+      end,
     },
   },
 }

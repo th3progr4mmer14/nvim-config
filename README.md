@@ -318,6 +318,7 @@ nvim-config/
 | [alpha-nvim](https://github.com/goolord/alpha-nvim) | Dashboard | VimEnter |
 | [nvim-tmux-navigation](https://github.com/alexghergh/nvim-tmux-navigation) | Navegar entre Neovim y tmux | sólo dentro de tmux |
 | [nvim-jdtls](https://github.com/mfussenegger/nvim-jdtls) | Extras de Java (jdt://, refactors, DAP) | archivos Java |
+| [spring-boot.nvim](https://github.com/JavaHello/spring-boot.nvim) | Servidor de Spring Boot: `application.yml`, beans, endpoints | Java/YAML en proyectos Spring Boot |
 | [flutter-tools.nvim](https://github.com/nvim-flutter/flutter-tools.nvim) | Flutter: dartls, run, hot reload, DAP | Dart, si existe `flutter` |
 | [nvim-dap](https://github.com/mfussenegger/nvim-dap) | Cliente de depuración | atajos de depuración |
 | [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui) + [nvim-nio](https://github.com/nvim-neotest/nvim-nio) | Interfaz de depuración | con nvim-dap |
@@ -357,6 +358,7 @@ Leyenda de origen: **M** = Mason (automático) · **S** = SDK / gestor del siste
 - En un proyecto con `postgres-language-server.jsonc` se activan `sqls` y `postgres_lsp` a la vez; si te sobra uno, quítalo de `servers.lua`.
 - `eslint` sólo se activa en proyectos con configuración de ESLint y `eslint` instalado en `node_modules`.
 - Lombok se activa automáticamente para jdtls (útil en Spring Boot).
+- **Spring Boot**: Mason instala `vscode-spring-boot-tools` (requiere Java 21+) y `spring-boot.nvim` lo conecta. Sólo arranca en proyectos cuyo `pom.xml`/`build.gradle` dependa de Spring Boot. La primera vez que se instala, reinicia Neovim.
 
 ---
 
@@ -513,6 +515,34 @@ Los atajos nativos `grr`, `gra`, `grn`, `gri`, `grt`, `grx` de Neovim 0.11+ se e
 ### Java (`nvim-jdtls`)
 
 `<leader>jo` organizar imports · `<leader>jv` extraer variable · `<leader>jc` extraer constante · `<leader>jm` (visual) extraer método · `<leader>jt` depurar test cercano · `<leader>jT` depurar clase de test.
+
+### Spring Boot (`spring-boot.nvim`)
+
+`<leader>jb` beans · `<leader>je` endpoints (`@RequestMapping`) · `<leader>ja` anotaciones de Spring. En `application.yml` / `application.properties` el autocompletado de propiedades (`spring.datasource.url`, `server.port`…) es automático.
+
+### Snippets de Spring Boot
+
+Viven en `snippets/java.json` y `snippets/yaml.json`. Escribe el prefijo y acepta con `Tab`; el nombre de la clase se toma del nombre del archivo.
+
+| Prefijo | Genera |
+| --- | --- |
+| `sbapp` | Clase principal `@SpringBootApplication` |
+| `sbcontroller` | `@RestController` con GET, GET por id, POST, PUT y DELETE |
+| `sbrest` | `@RestController` vacío |
+| `sbservice` | `@Service` con `@RequiredArgsConstructor` y `@Transactional` |
+| `sbrepo` | `JpaRepository<Entidad, Long>` |
+| `sbentity` | `@Entity` con Lombok, id autoincremental y `createdAt` |
+| `sbrecord` | DTO `record` con validación |
+| `sbadvice` | `@RestControllerAdvice` con `ProblemDetail` |
+| `sbconfig` | `@Configuration` con un `@Bean` |
+| `sbget` / `sbpost` / `sbput` / `sbdelete` | Métodos de endpoint |
+| `sbtest` | `@SpringBootTest` + `MockMvc` |
+| `sbunit` | Test unitario JUnit 5 + Mockito |
+| `sblog` | Logger de SLF4J |
+| `sbdatasource` (YAML) | `spring.datasource` PostgreSQL + JPA con variables de entorno |
+| `sbserver` (YAML) | Puerto y `actuator/health` |
+
+Para agregar los tuyos, edita esos JSON (formato de snippets de VS Code) y reinicia Neovim.
 
 ### Flutter (`flutter-tools`)
 

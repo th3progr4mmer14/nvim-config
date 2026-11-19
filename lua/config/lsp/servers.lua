@@ -150,14 +150,6 @@ M.servers = {
           end
         end
       end
-      -- Extensiones de Spring Boot para jdtls (autocompletado de anotaciones, beans,
-      -- code actions). Sólo si Mason ya instaló vscode-spring-boot-tools.
-      if vim.uv.fs_stat(vim.fs.joinpath(share, "vscode-spring-boot-tools")) then
-        local ok, spring_boot = pcall(require, "spring_boot")
-        if ok then
-          vim.list_extend(bundles, spring_boot.java_extensions())
-        end
-      end
       return { init_options = { bundles = bundles } }
     end,
   },
@@ -192,7 +184,6 @@ M.tools = {
   { name = "goimports", requires = "go" }, -- Go (imports)
   { name = "sql-formatter", requires = "npm" }, -- SQL / PostgreSQL
   { name = "tree-sitter-cli" }, -- requerido por nvim-treesitter (rama main) para compilar parsers
-  { name = "vscode-spring-boot-tools", requires = "java" }, -- Spring Boot LS + extensiones de jdtls
 }
 
 ---¿Están disponibles los ejecutables que necesita Mason para instalar este paquete?
